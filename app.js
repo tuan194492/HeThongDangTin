@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
+const authRouter = require('./routes/authRoute')
 const databaseInit = require('./utils/function')
 
 const app = express();
@@ -16,6 +17,7 @@ databaseInit()
 
 app.use('/', indexRouter);
 app.use('/api/users', usersRouter);
+app.use('/api/auth', authRouter)
 
 app.listen(port, () => {
   console.log(`TinkerBellGarden is listening at http://localhost:${port}`)

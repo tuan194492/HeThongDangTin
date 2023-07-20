@@ -1,4 +1,4 @@
-const { DataTypes } = require('sequelize');
+const { DataTypes, STRING } = require('sequelize');
 const sequelize = require('../utils/database')
 // Define User model
 const User = sequelize.define('User', {
@@ -28,6 +28,9 @@ const User = sequelize.define('User', {
   },
   image: {
     type: DataTypes.BLOB,
+  },
+  role: {
+    type: DataTypes.STRING
   },
   created_at: {
     type: DataTypes.DATE,
