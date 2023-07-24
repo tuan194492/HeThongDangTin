@@ -1,7 +1,7 @@
 const { validationResult, check } = require("express-validator");
 const User = require("../models/User");
 const userService = require("../services/UserServices");
-
+const fileServices = require("../services/FilesServices");
 // Create a new User
 exports.createUser = async (req, res) => {
   // Validate request data
@@ -56,9 +56,18 @@ exports.getUserById = (req, res) => {
 };
 
 // Update a User
-exports.updateUser = (req, res) => {
+exports.updateUser = async (req, res) => {
   const { id } = req.params;
-  const userData = req.body;
+  let userData = req.body;
+  const avatar = req.files.avatar;
+  const result = await fileServices.uploadFiles(avatar);
+  console.log(result)
+  console.log(result.data)
+  if (result.success) {
+    userData = { ...userData, image: result.data };
+  } else {
+    res.status(500).json({ error: `Error updating user. ${result.data}` });
+  }
 
   userService
     .updateUser(id, userData)

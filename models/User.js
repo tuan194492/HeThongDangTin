@@ -29,17 +29,14 @@ const User = sequelize.define(
       type: DataTypes.STRING,
     },
     image: {
-      type: DataTypes.BLOB,
+      type: DataTypes.STRING,
     },
     role: {
       type: DataTypes.STRING,
-    },
-    created_at: {
-      type: DataTypes.DATE,
-    },
+    }
   },
   {
-    tableName: "user",
+    tableName: "user", 
   }
 );
 

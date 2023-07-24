@@ -1,4 +1,4 @@
-const User = require('../models/User');
+const User = require("../models/User");
 
 // Create a new User
 exports.createUser = (userData) => {
@@ -32,4 +32,3 @@ exports.deleteUser = (userId) => {
     },
   });
 };
-
