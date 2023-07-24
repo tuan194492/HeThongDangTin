@@ -27,10 +27,7 @@ const Advertisement = sequelize.define('Advertisement', {
     },
     area: {
       type: DataTypes.DOUBLE,
-    },
-    created_at: {
-      type: DataTypes.DATE,
-    },
+    }
   },
   {
       tableName: 'advertisement'
