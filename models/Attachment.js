@@ -12,10 +12,7 @@ const Attachment = sequelize.define('Attachment', {
     },
     url: {
       type: DataTypes.STRING,
-    },
-    created_at: {
-      type: DataTypes.DATE,
-    },
+    }
   },
   {
       tableName: 'attachment'
