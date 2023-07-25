@@ -8,7 +8,7 @@ const fileServices = require("../services/FilesServices");
 const createAdvertisement = async (req, res, next) => {
     try {
         const data = req.body;
-        const image = req.files.image;
+        const image = req.files.file;
         console.log('image', image)
         console.log(req.body);
         const advertisement = await advertisementServices.createAdvertisement(data);

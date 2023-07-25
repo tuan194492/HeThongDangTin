@@ -1,5 +1,6 @@
 const { DataTypes, STRING } = require("sequelize");
 const sequelize = require("../utils/database");
+const USER_STATUS = require("../enum/USER_STATUS");
 // Define User model
 const User = sequelize.define(
   "User",
@@ -33,6 +34,10 @@ const User = sequelize.define(
     },
     role: {
       type: DataTypes.STRING,
+    },
+    status: {
+      type: DataTypes.CHAR,
+      default: USER_STATUS.ACTIVE
     }
   },
   {

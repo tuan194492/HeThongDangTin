@@ -1,22 +1,23 @@
 const User = require("../models/User");
+const USER_STATUS = require("../enum/USER_STATUS");
 
 // Create a new User
-exports.createUser = (userData) => {
+exports.createUser = async (userData) => {
   return User.create(userData);
 };
 
 // Retrieve all Users
-exports.getAllUsers = () => {
+exports.getAllUsers = async () => {
   return User.findAll();
 };
 
 // Retrieve a User by ID
-exports.getUserById = (userId) => {
+exports.getUserById = async (userId) => {
   return User.findByPk(userId);
 };
 
 // Update a User
-exports.updateUser = (userId, userData) => {
+exports.updateUser = async (userId, userData) => {
   return User.update(userData, {
     where: {
       id: userId,
@@ -25,10 +26,39 @@ exports.updateUser = (userId, userData) => {
 };
 
 // Delete a User
-exports.deleteUser = (userId) => {
+exports.deleteUser = async (userId) => {
   return User.destroy({
     where: {
       id: userId,
     },
   });
 };
+
+exports.activeUser = async (userId) => {
+  let user = User.findByPk(userId);
+  if (!user) {
+    throw new Error("User not found");
+  } else {
+    user.status = USER_STATUS.ACTIVE;
+    await user.save();
+  }
+};
+
+exports.disableUser = async (userId) => {
+  let user = User.findByPk(userId);
+  if (!user) {
+    throw new Error("User not found");
+  } else {
+    user.status = USER_STATUS.DISABLED;
+    await user.save();
+  }
+};
+
+exports.getUserListByStatus = async (status) => {
+  return User.findAll({
+    where: {
+      status: status
+    }
+  })
+};
+ 
