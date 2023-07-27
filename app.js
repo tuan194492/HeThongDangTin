@@ -6,8 +6,12 @@ const authRouter = require("./routes/authRouter");
 const fileUpload = require('express-fileupload')
 const databaseInit = require("./utils/function");
 const route = require('./routes/index');
+var cors = require('cors')
+
 const app = express();
 const port = 3000;
+
+app.use(cors()) // Use this after the variable declaration
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
