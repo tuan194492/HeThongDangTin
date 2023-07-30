@@ -1,4 +1,6 @@
 const ROLE = {
-    ADMIN: 'admin',
-    OWNER: 'owner'
+    ADMIN: 'ADMIN',
+    OWNER: 'OWNER'
 }
+
+module.exports = ROLE;

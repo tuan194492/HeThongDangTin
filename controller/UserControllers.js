@@ -59,15 +59,18 @@ exports.getUserById = (req, res) => {
 exports.updateUser = async (req, res) => {
   const { id } = req.params;
   let userData = req.body;
-  const avatar = req.files.avatar;
-  const result = await fileServices.uploadFiles(avatar);
-  console.log(result)
-  console.log(result.data)
-  if (result.success) {
-    userData = { ...userData, image: result.data };
-  } else {
-    res.status(500).json({ error: `Error updating user. ${result.data}` });
+  let avatar, result;
+  if (req.files) {
+    avatar = req.files.avatar;
+    result = await fileServices.uploadFiles(avatar);
+    if (result.success) {
+      userData = { ...userData, image: result.data };
+    } else {
+      res.status(500).json({ error: `Error updating user. ${result.data}` });
+    }
   }
+  
+  
 
   userService
     .updateUser(id, userData)

@@ -4,6 +4,7 @@ const { validationResult, check } = require("express-validator");
 const User = require("../models/User");
 const dotenv = require("dotenv");
 const ROLE = require("../enum/ROLE");
+const USER_STATUS = require("../enum/USER_STATUS");
 dotenv.config();
 
 // Access the JWT secret as an environment variable
@@ -23,12 +24,12 @@ exports.login = async (req, res) => {
         }
       }
 
-      const token = jwt.sign({ userId: user.id }, jwtSecret, {
+      const token = jwt.sign({ userId: user.id, role: user.role }, jwtSecret, {
         expiresIn: "30m",
       });
       res.json({
         token: token,
-        userId: user.id,
+        user: user,
         role: user.role,
         message: "Login successful",
       });
@@ -40,7 +41,7 @@ exports.login = async (req, res) => {
 };
 
 exports.register = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, name, facebook, phone_number, zalo_number } = req.body;
 
   try {
     // Check if the username already exists
@@ -53,7 +54,7 @@ exports.register = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create a new user in the database
-    await User.create({ email, password: hashedPassword, role: ROLE.OWNER });
+    await User.create({ email, password: hashedPassword, role: ROLE.OWNER, status: USER_STATUS.ACTIVE, name, facebook, phone_number, zalo_number });
 
     // Respond with a success message
     res.json({ message: "Registration successful." });
