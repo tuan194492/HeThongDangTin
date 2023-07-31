@@ -13,7 +13,9 @@ const createAdvertisement = async (req, res, next) => {
         console.log(req.body);
         const advertisement = await advertisementServices.createAdvertisement(data);
         let result = { success: true }
-        if (image) {
+        if (image instanceof Array) {
+            result = await fileServices.uploadFilesForAttachment(image, advertisement.id);
+        } else {
             result = await fileServices.uploadFileForAttachment(image, advertisement.id);
         }
         if (result.success) {

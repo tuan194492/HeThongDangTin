@@ -27,6 +27,7 @@ const uploadFiles = (file) => {
 
 const uploadFileForAttachment = async (file, advertisement_id) => {
   return new Promise((resolve, reject) => {
+    console.log(file)
     file.mv(`${absolutePath}/files/${file.name}`, (err) => {
       let result;
       if (err) {
@@ -59,18 +60,23 @@ const uploadFileForAttachment = async (file, advertisement_id) => {
 };
 
 const validateUpload = (req, res, next) => {
-    console.log('Files', req.files.file)
+  if (!req.files) {
+    return res
+        .status(400)
+        .json({ message: "No files were uploaded"});
+  }
+  console.log(req.files)
   if (!(req.files.file instanceof Array)) {
     if (!req.files.file.mimetype.startsWith("image")) {
       return res
         .status(400)
-        .json({ errors: [{ msg: "Only image files are allowed" }] });
+        .json({message: "Only image files are allowed" });
     }
   } else {
     if (!req.files || !req.files["file"] || req.files.length === 0) {
       return res
         .status(400)
-        .json({ errors: [{ msg: "No files were uploaded" }] });
+        .json({ message: "No files were uploaded" });
     }
 
     req.files["file"].forEach((file) => {
@@ -78,7 +84,7 @@ const validateUpload = (req, res, next) => {
       if (!file.mimetype.startsWith("image")) {
         return res
           .status(400)
-          .json({ errors: [{ msg: "Only image files are allowed" }] });
+          .json({ message: "Only image files are allowed" });
       }
     });
   }
@@ -87,9 +93,16 @@ const validateUpload = (req, res, next) => {
 };
 
 const uploadFilesForAttachment = async (files, advertisement_id) => {
-  for (let file in files) {
-    await uploadFileForAttachment(file, advertisement_id);
+  console.log("Upload multipulte file")
+  for (let file of files) {
+    const res = await uploadFileForAttachment(file, advertisement_id);
+    if (!res.success) {
+      return {
+        success: false
+      }
+    }
   }
+  return {success: true};
 };
 
 const findAttachmentsByAdvertisementId = async (advertisement_id) => {

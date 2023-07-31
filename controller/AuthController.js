@@ -36,7 +36,7 @@ exports.login = async (req, res) => {
     })
     .catch((error) => {
       console.error("Error finding user:", error);
-      res.status(500).json({ error: "Huhu" });
+      res.status(500).json({ error: "Internal User Error" });
     });
 };
 
@@ -73,7 +73,7 @@ exports.authenticateToken = (req, res, next) => {
 
   jwt.verify(token, jwtSecret, (err, user) => {
     if (err) {
-      return res.sendStatus(403);
+      return res.status(403).json({message: 'Token expired. Please login again'});
     }
     req.user = user;
     console.log("USER from token", req.user);
