@@ -72,6 +72,7 @@ exports.authenticateToken = (req, res, next) => {
   }
 
   jwt.verify(token, jwtSecret, (err, user) => {
+    console.log(err)
     if (err) {
       return res.status(403).json({message: 'Token expired. Please login again'});
     }

@@ -38,7 +38,10 @@ const deleteAdvertisement = async (id) => {
     throw new Error("Advertisement not found");
   }
 
-  return advertisement.destroy();
+  return await advertisement.update({
+    ...advertisement,
+    status: ADVERTISEMENT_STATUS.DELETED
+  });
 };
 
 const approveAdvertisement = async (id) => {

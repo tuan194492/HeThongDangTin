@@ -5,10 +5,10 @@ const authController = require('../controller/AuthController')
 const fileServices = require('../services/FilesServices');
 
 router.post('/', authController.authenticateToken, fileServices.validateUpload, advertisementController.createAdvertisement);
-router.get('/my-advertisement', advertisementController.getAllAdvertisements);
-router.put('/:id', advertisementController.updateAdvertisementById);
-router.get('/:id', advertisementController.getAdvertisementById);
-router.delete('/:id', advertisementController.deleteAdvertisementById);
+router.get('/my-advertisement', authController.authenticateToken, advertisementController.getAllAdvertisements);
+router.put('/:id', authController.authenticateToken, advertisementController.updateAdvertisementById);
+router.get('/:id', authController.authenticateToken, advertisementController.getAdvertisementById);
+router.delete('/:id', authController.authenticateToken, advertisementController.deleteAdvertisementById);
 
 
 module.exports = router;
