@@ -5,7 +5,7 @@ const ADVERTISEMENT_STATUS = require("../enum/ADVERTISEMENT_STATUS");
 const createAdvertisement = async (advertisementData) => {
   return Advertisement.create({
     ...advertisementData,
-    status: ADVERTISEMENT_STATUS.NEW,
+    status: ADVERTISEMENT_STATUS.PENDING_APPROVAL,
   });
 };
 
