@@ -14,6 +14,17 @@ const getAllAdvertisements = async () => {
   return Advertisement.findAll();
 };
 
+// Function to get all advertisements by user Id 
+const getAllAdvertisementsByUserId = async (userId) => {
+  console.log('123')
+  // if (!userId) return [];
+  return Advertisement.findAll({ 
+    where: {
+      publish_user_id: userId
+    }
+  }); 
+};
+
 // Function to get a single advertisement by ID
 const getAdvertisementById = async (id) => {
   return Advertisement.findByPk(id);
@@ -72,4 +83,5 @@ module.exports = {
   deleteAdvertisement,
   approveAdvertisement,
   rejectAdvertisement,
+  getAllAdvertisementsByUserId
 };

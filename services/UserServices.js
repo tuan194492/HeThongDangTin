@@ -1,6 +1,6 @@
 const User = require("../models/User");
 const USER_STATUS = require("../enum/USER_STATUS");
-
+const ROLE = require("../enum/ROLE");
 // Create a new User
 exports.createUser = async (userData) => {
   return User.create(userData);
@@ -8,7 +8,13 @@ exports.createUser = async (userData) => {
 
 // Retrieve all Users
 exports.getAllUsers = async () => {
-  return User.findAll();
+  return User.findAll({
+
+    where: {
+      role: ROLE.OWNER
+    }
+  }
+  );
 };
 
 // Retrieve a User by ID
@@ -61,4 +67,3 @@ exports.getUserListByStatus = async (status) => {
     }
   })
 };
- 

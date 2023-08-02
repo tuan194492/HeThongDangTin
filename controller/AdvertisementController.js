@@ -30,8 +30,33 @@ const createAdvertisement = async (req, res, next) => {
     }
 };
 
+const getAllAdvertisementsByUserId = async (req, res, next) => {
+    try {
+        console.log("DCM DEO NHAN A") 
+        const result = await advertisementServices.getAllAdvertisementsByUserId(req.user.userId);
+        const advertisements = [];
+        for (let advertisement of result) {
+            const attachmentList = await fileServices.findAttachmentsByAdvertisementId(advertisement.id);
+            const attachments = [];
+            for (let attachment of attachmentList) {
+                attachments.push(attachment.dataValues.url);
+            }
+            advertisements.push({
+                ...advertisement.dataValues,
+                attachments: attachments
+            })
+
+        }
+        res.status(201).json({ message: "Get All Advertisement Successful", data: advertisements });
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({ error: "Error getting Advertisement" });
+    }
+};
+
 const getAllAdvertisements = async (req, res, next) => {
     try {
+        
         const result = await advertisementServices.getAllAdvertisements();
         const advertisements = [];
         for (let advertisement of result) {
@@ -111,4 +136,5 @@ module.exports = {
     updateAdvertisementById,
     getAdvertisementById,
     deleteAdvertisementById,
+    getAllAdvertisementsByUserId
 };
