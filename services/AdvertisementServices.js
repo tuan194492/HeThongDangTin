@@ -58,10 +58,13 @@ const deleteAdvertisement = async (id) => {
 const approveAdvertisement = async (id) => {
   const advertisement = await Advertisement.findByPk(id);
   if (!advertisement) {
+    console.log(1)
     throw new Error("Advertisement not found");
   } else {
+    console.log(2)
     advertisement.status = ADVERTISEMENT_STATUS.OUTSTANDING;
     await advertisement.save();
+    return advertisement;
   }
 };
 
