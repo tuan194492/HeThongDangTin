@@ -32,7 +32,6 @@ const createAdvertisement = async (req, res, next) => {
 
 const getAllAdvertisementsByUserId = async (req, res, next) => {
     try {
-        console.log("DCM DEO NHAN A") 
         const result = await advertisementServices.getAllAdvertisementsByUserId(req.user.userId);
         const advertisements = [];
         for (let advertisement of result) {
@@ -94,6 +93,36 @@ const updateAdvertisementById = async (req, res, next) => {
     }
 };
 
+const approveAdvertisement = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const result = await advertisementServices.approveAdvertisement(id);
+        res.status(200).json({
+            ...result.dataValues,
+            message: 'Approve advertisement successful'
+        });
+    } catch (err) {
+        res.status(422).json({
+            message: 'Advertisement Not Found'
+        })
+    }
+};
+
+const rejectAdvertisement = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const result = await advertisementServices.rejectAdvertisement(id);
+        res.status(200).json({
+            ...result.dataValues,
+            message: 'Reject advertisement successful'
+        });
+    } catch (err) {
+        res.status(422).json({
+            message: 'Advertisement Not Found'
+        })
+    }
+};
+
 const getAdvertisementById = async (req, res, next) => {
     try {
         const { id } = req.params;
@@ -136,5 +165,7 @@ module.exports = {
     updateAdvertisementById,
     getAdvertisementById,
     deleteAdvertisementById,
-    getAllAdvertisementsByUserId
+    getAllAdvertisementsByUserId,
+    approveAdvertisement,
+    rejectAdvertisement,
 };
