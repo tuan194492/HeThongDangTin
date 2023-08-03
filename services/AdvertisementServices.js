@@ -75,7 +75,8 @@ const rejectAdvertisement = async (id) => {
   } else {
     advertisement.status = ADVERTISEMENT_STATUS.REJECTED;
     await advertisement.save();
-  }
+    return advertisement;
+}
 };
 
 module.exports = {

@@ -118,6 +118,7 @@ const rejectAdvertisement = async (req, res, next) => {
             message: 'Reject advertisement successful'
         });
     } catch (err) {
+        console.log(err)
         res.status(422).json({
             message: 'Advertisement Not Found'
         })
