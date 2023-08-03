@@ -1,5 +1,6 @@
 const { validationResult, check } = require("express-validator");
 const User = require("../models/User");
+const PaymentAccount = require("../models/PaymentAccount");
 const userService = require("../services/UserServices");
 const fileServices = require("../services/FilesServices");
 // Create a new User
@@ -18,6 +19,10 @@ exports.createUser = async (req, res) => {
   userService
     .createUser(userData)
     .then((user) => {
+      PaymentAccount.create({
+        id: user.id,
+        balance_amt: 0
+      })
       res.status(201).json(user);
     })
     .catch((error) => {

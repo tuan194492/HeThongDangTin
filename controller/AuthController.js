@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { validationResult, check } = require("express-validator");
 const User = require("../models/User");
+const PaymentAccount = require("../models/PaymentAccount");
 const dotenv = require("dotenv");
 const ROLE = require("../enum/ROLE");
 const USER_STATUS = require("../enum/USER_STATUS");
@@ -57,8 +58,11 @@ exports.register = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create a new user in the database
-    await User.create({ email, password: hashedPassword, role: ROLE.OWNER, status: USER_STATUS.ACTIVE, name, facebook, phone_number, zalo_number });
-
+    const user = await User.create({ email, password: hashedPassword, role: ROLE.OWNER, status: USER_STATUS.ACTIVE, name, facebook, phone_number, zalo_number });
+    await PaymentAccount.create({
+      id: user.id,
+      balance_amt: 0
+    })
     // Respond with a success message
     res.json({ message: "Registration successful." });
   } catch (error) {

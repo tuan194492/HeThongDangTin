@@ -4,8 +4,7 @@ const sequelize = require('../utils/database')
 const PaymentAccount = sequelize.define('PaymentAccount', {
     id: {
       type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
+      primaryKey: true
     },
     balance_amt: {
       type: DataTypes.DOUBLE,
