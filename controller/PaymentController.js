@@ -68,7 +68,7 @@ const getPaymentAccountHistory = async (req, res) => {
                 }
             })      
             if (res2) {
-                returnResult = [...returnResult, {...element.dataValues, dateBegin: res.date_begin, duration: res.duration / 3600}];
+                returnResult = [...returnResult, {...element.dataValues, dateBegin: res2.date_begin, duration: res2.duration / 3600}];
             }
         }
         res.status(200).json({ message: "Get list successful", list: returnResult});

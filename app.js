@@ -6,7 +6,7 @@ const authRouter = require("./routes/authRouter");
 const fileUpload = require('express-fileupload')
 const databaseInit = require("./utils/function");
 const route = require('./routes/index');
-const updateExpiredAdvertisementUpgrade = require("./services/AdvertisementServices");
+const advertisementServices = require("./services/AdvertisementServices");
 var cors = require('cors')
 
 const app = express();
@@ -25,10 +25,10 @@ databaseInit();
 route(app);
 
 
-// setInterval(async () => {
-//   console.log('running a task every 30 secs');
-//   await updateExpiredAdvertisementUpgrade();
-// }, 1000 * 30);
+setInterval(async () => {
+  console.log('running a task every 30 secs');
+  await advertisementServices.updateExpiredAdvertisementUpgrade();
+}, 1000 * 30);
 
 app.listen(port, () => {
   console.log(`Server is listening at http://localhost:${port}`);

@@ -113,14 +113,18 @@ const upgradeAdvertisement = async (id, payment_id, data) => {
 
 const updateExpiredAdvertisementUpgrade = async () => {
   const adsList = await AdvertisementOutstanding.findAll();
+  
   for (let ad of adsList) {
-    if (ad.date_begin.valueOf() + ad.duration > new Date().valueOf()) {
+    console.log(new Date(ad.date_begin.valueOf()).getTime());
+    console.log(ad.duration.valueOf());
+    console.log((new Date()).valueOf());
+    if (new Date(ad.date_begin.valueOf()).getTime() + ad.duration < new Date().valueOf()) {
       await AdvertisementHistory.create({
-        advertisement_id: id,
-        date_begin: dateBegin,
-        duration: duration,
-        service_type: service_type,
-        payment_id: payment_id,
+        advertisement_id: ad.id,
+        date_begin: ad.date_begin,
+        duration: ad.duration,
+        service_type: ad.service_type,
+        payment_id: ad.payment_id,
       });
       await Advertisement.update(
         {
@@ -128,7 +132,7 @@ const updateExpiredAdvertisementUpgrade = async () => {
         },
         {
           where: {
-            id: id,
+            id: ad.advertisement_id,
           },
         }
       );
