@@ -175,14 +175,24 @@ const getAdvertisementForGuest = async (req, res, next) => {
             page =Number(page);
         }
         const result = await advertisementServices.getAdvertisementForGuest(pageLimit, page);
-        res.status(200).json({
-            message: 'Get advertisement successful',
-            data: result
-        });
+        const advertisements = [];
+        for (let advertisement of result.rows) {
+            const attachmentList = await fileServices.findAttachmentsByAdvertisementId(advertisement.id);
+            const attachments = [];
+            for (let attachment of attachmentList) {
+                attachments.push(attachment.dataValues.url);
+            }
+            advertisements.push({
+                ...advertisement.dataValues,
+                attachments: attachments
+            })
+
+        }
+        res.status(200).json({ message: "Get All Advertisement Successful", data: {advertisements, count: result.count} });
     } catch (err) {
         console.log(err)
         res.status(422).json({
-            message: 'Advertisement Not Found'
+            message: 'Some error happened. Please try again later!'
         })
     }
 }
@@ -190,13 +200,23 @@ const getAdvertisementForGuest = async (req, res, next) => {
 const getRelatedAdvertisementForGuest = async (req, res, next) => {
     try {
         const result = await advertisementServices.getRelatedAdvertisementForGuest();
-        res.status(200).json({
-            message: 'Get advertisement successful',
-            data: result
-        });
+        const advertisements = [];
+        for (let advertisement of result.rows) {
+            const attachmentList = await fileServices.findAttachmentsByAdvertisementId(advertisement.id);
+            const attachments = [];
+            for (let attachment of attachmentList) {
+                attachments.push(attachment.dataValues.url);
+            }
+            advertisements.push({
+                ...advertisement.dataValues,
+                attachments: attachments
+            })
+
+        }
+        res.status(200).json({ message: "Get All Advertisement Successful", data: {advertisements, count: result.count} });
     } catch (err) {
         res.status(422).json({
-            message: 'Advertisement Not Found'
+            message: 'Some error happened. Please try again later!'
         })
     }
 }
