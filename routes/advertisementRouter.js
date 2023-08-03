@@ -4,6 +4,10 @@ const advertisementController = require('../controller/AdvertisementController')
 const authController = require('../controller/AuthController')
 const fileServices = require('../services/FilesServices');
 
+// Guest
+router.get('/guest', advertisementController.getAdvertisementForGuest);
+router.get('/guest/related', advertisementController.getRelatedAdvertisementForGuest);
+// Admin And Owner
 router.post('/', authController.authenticateToken, fileServices.validateUpload, advertisementController.createAdvertisement);
 router.get('/my-advertisement', authController.authenticateToken, advertisementController.getAllAdvertisementsByUserId);
 router.get('/all', authController.authenticateToken, authController.authorizeAdmin, advertisementController.getAllAdvertisements);

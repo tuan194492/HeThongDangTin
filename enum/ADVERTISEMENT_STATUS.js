@@ -4,7 +4,8 @@ const ADVERTISEMENT_STATUS = {
     DELETED: 'D',
     REJECTED: 'R',
     HISTORY: 'H',
-    PENDING_APPROVAL: 'P'
+    PENDING_APPROVAL: 'P',
+    UPGRADED: 'U'
 }
 
 module.exports = ADVERTISEMENT_STATUS;

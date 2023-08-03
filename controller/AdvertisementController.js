@@ -161,6 +161,46 @@ const deleteAdvertisementById = async (req, res, next) => {
     }
 };
 
+const getAdvertisementForGuest = async (req, res, next) => {
+    try {
+        let {pageLimit, page} = req.query;
+        if (!pageLimit || !Number(pageLimit)) {
+            pageLimit = 5;
+        } else {
+            pageLimit =Number(pageLimit);
+        }
+        if (!page || !Number(page)) {
+            page = 1;
+        } else {
+            page =Number(page);
+        }
+        const result = await advertisementServices.getAdvertisementForGuest(pageLimit, page);
+        res.status(200).json({
+            message: 'Get advertisement successful',
+            data: result
+        });
+    } catch (err) {
+        console.log(err)
+        res.status(422).json({
+            message: 'Advertisement Not Found'
+        })
+    }
+}
+
+const getRelatedAdvertisementForGuest = async (req, res, next) => {
+    try {
+        const result = await advertisementServices.getRelatedAdvertisementForGuest();
+        res.status(200).json({
+            message: 'Get advertisement successful',
+            data: result
+        });
+    } catch (err) {
+        res.status(422).json({
+            message: 'Advertisement Not Found'
+        })
+    }
+}
+
 module.exports = {
     createAdvertisement,
     getAllAdvertisements,
@@ -170,4 +210,6 @@ module.exports = {
     getAllAdvertisementsByUserId,
     approveAdvertisement,
     rejectAdvertisement,
+    getAdvertisementForGuest,
+    getRelatedAdvertisementForGuest
 };

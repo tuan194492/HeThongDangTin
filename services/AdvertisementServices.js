@@ -3,6 +3,7 @@ const AdvertisementOutstanding = require("../models/AdvertisementUpgradeOutstand
 const AdvertisementHistory = require("../models/AdvertisementUpgradeHistory");
 const ADVERTISEMENT_STATUS = require("../enum/ADVERTISEMENT_STATUS");
 const AdvertisementUpgradeOutstanding = require("../models/AdvertisementUpgradeOutstanding");
+const sequelize = require('sequelize');
 
 // Function to create a new advertisement
 const createAdvertisement = async (advertisementData) => {
@@ -135,6 +136,28 @@ const updateExpiredAdvertisementUpgrade = async () => {
   }
 };
 
+const getAdvertisementForGuest = async (pageLimit, page) => {
+    return await Advertisement.findAndCountAll({
+        where: {
+            status: [ADVERTISEMENT_STATUS.OUTSTANDING, ADVERTISEMENT_STATUS.UPGRADED]
+        },
+        limit: pageLimit,
+        offset: (page - 1) * pageLimit
+    })
+}
+
+const getRelatedAdvertisementForGuest = async () => {
+    return await Advertisement.findAndCountAll({
+        where: {
+            status: [ADVERTISEMENT_STATUS.OUTSTANDING, ADVERTISEMENT_STATUS.UPGRADED]
+        },
+        limit: 4,
+        offset: (page - 1) * pageLimit,
+        order: sequelize.random()
+
+    })
+}
+
 module.exports = {
   createAdvertisement,
   getAllAdvertisements,
@@ -146,4 +169,6 @@ module.exports = {
   getAllAdvertisementsByUserId,
   updateExpiredAdvertisementUpgrade,
   upgradeAdvertisement,
+  getAdvertisementForGuest,
+  getRelatedAdvertisementForGuest
 };
