@@ -19,14 +19,14 @@ const Advertisement = sequelize.define('Advertisement', {
     title: { 
       type: DataTypes.TEXT,
     },
-    remark: {
+    remark: { 
       type: DataTypes.TEXT,
     },
     price: {
       type: DataTypes.DOUBLE,
     },
-    area: {
-      type: DataTypes.DOUBLE,
+    address: {
+      type: DataTypes.TEXT,
     }
   },
   {

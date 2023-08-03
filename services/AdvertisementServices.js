@@ -7,7 +7,7 @@ const sequelize = require('sequelize');
 
 // Function to create a new advertisement
 const createAdvertisement = async (advertisementData) => {
-  return Advertisement.create({
+  return await Advertisement.create({
     ...advertisementData,
     status: ADVERTISEMENT_STATUS.PENDING_APPROVAL,
   });

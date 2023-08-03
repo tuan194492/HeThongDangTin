@@ -25,6 +25,28 @@ exports.createUser = async (req, res) => {
     });
 };
 
+exports.createAdmin = async (req, res) => {
+  // Validate request data
+  await validateUser({ req });
+
+  // If there are validation errors, return them as the response
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  const userData = req.body;
+
+  userService
+    .createUser(userData)
+    .then((user) => {
+      res.status(201).json(user);
+    })
+    .catch((error) => {
+      res.status(500).json({ error: "Error creating user" });
+    });
+};
+
 // Get all Users
 exports.getAllUsers = (req, res) => {
   userService
@@ -36,6 +58,28 @@ exports.getAllUsers = (req, res) => {
       res.status(500).json({ error: "Error retrieving users" });
     });
 };
+
+exports.activeUser = async (req, res) => {
+  try {
+    const {id} = req.params;
+    await userService.activeUser(id);
+    res.status(200).json({ error: "Active User successful!" });
+  } catch (err) {
+    console.log(err)
+    res.status(404).json({ error: "User not found" });
+  }
+}
+
+exports.disableUser = async (req, res) => {
+  try {
+    const {id} = req.params;
+    await userService.disableUser(id);
+    res.status(200).json({ error: "Disable User successful!" });
+  } catch (err) {
+    res.status(404).json({ error: "User not found" });
+  }
+}
+
 
 // Get a User by ID
 exports.getUserById = (req, res) => {

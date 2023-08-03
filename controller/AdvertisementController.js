@@ -2,16 +2,16 @@ const { validationResult, check } = require("express-validator");
 const User = require("../models/User");
 const advertisementServices = require("../services/AdvertisementServices");
 const fileServices = require("../services/FilesServices");
-
+const userService = require("../services/UserServices")
 
 
 const createAdvertisement = async (req, res, next) => {
     try {
         const data = req.body;
         const image = req.files.file;
-        console.log('image', image)
+        const userId = req.user.userId;
         console.log(req.body);
-        const advertisement = await advertisementServices.createAdvertisement(data);
+        const advertisement = await advertisementServices.createAdvertisement({...data, publish_user_id: userId});
         let result = { success: true }
         if (image instanceof Array) {
             result = await fileServices.uploadFilesForAttachment(image, advertisement.id);
@@ -129,6 +129,7 @@ const getAdvertisementById = async (req, res, next) => {
     try {
         const { id } = req.params;
         const result = await advertisementServices.getAdvertisementById(id);
+        const user = await User.findByPk(result.publish_user_id);
         const attachmentList = await fileServices.findAttachmentsByAdvertisementId(id);
         const attachments = [];
         for (let attachment of attachmentList) {
@@ -136,6 +137,7 @@ const getAdvertisementById = async (req, res, next) => {
         }
         res.status(200).json({
             ...result.dataValues,
+            user: user,
             attachments: attachments,
             message: 'Get advertisement successful'
         });
@@ -231,8 +233,11 @@ const getAdvertisementByIdForGuest = async (req, res, next) => {
         for (let attachment of attachmentList) {
             attachments.push(attachment.dataValues.url);
         }
+        const user = await User.findByPk(result.publish_user_id);
+        console.log(user)
         res.status(200).json({
             ...result.dataValues,
+            user: user,
             attachments: attachments,
             message: 'Get advertisement successful'
         });

@@ -19,6 +19,9 @@ exports.login = async (req, res) => {
       if (!user) {
         return res.status(401).json({ error: "Email is not exist." });
       } else {
+        if (user.status == 'D') {
+          return res.status(401).json({ error: "Your Account have been disabled. Please contact Admin for enable!" });
+        }
         if (!(await bcrypt.compare(password, user.password))) {
           return res.status(401).json({ error: "Password is not correct." });
         }

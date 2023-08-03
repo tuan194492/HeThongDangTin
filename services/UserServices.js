@@ -41,7 +41,7 @@ exports.deleteUser = async (userId) => {
 };
 
 exports.activeUser = async (userId) => {
-  let user = User.findByPk(userId);
+  let user = await User.findByPk(userId);
   if (!user) {
     throw new Error("User not found");
   } else {
@@ -51,7 +51,7 @@ exports.activeUser = async (userId) => {
 };
 
 exports.disableUser = async (userId) => {
-  let user = User.findByPk(userId);
+  let user = await User.findByPk(userId);
   if (!user) {
     throw new Error("User not found");
   } else {
