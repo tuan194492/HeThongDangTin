@@ -6,6 +6,7 @@ const fileServices = require('../services/FilesServices');
 
 // Guest
 router.get('/guest', advertisementController.getAdvertisementForGuest);
+router.get('/guest/post/:id', advertisementController.getAdvertisementByIdForGuest);
 router.get('/guest/related', advertisementController.getRelatedAdvertisementForGuest);
 // Admin And Owner
 router.post('/', authController.authenticateToken, fileServices.validateUpload, advertisementController.createAdvertisement);

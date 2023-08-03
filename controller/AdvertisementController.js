@@ -221,6 +221,28 @@ const getRelatedAdvertisementForGuest = async (req, res, next) => {
     }
 }
 
+const getAdvertisementByIdForGuest = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const result = await advertisementServices.getAdvertisementByIdForGuest(id);
+        const attachmentList = await fileServices.findAttachmentsByAdvertisementId(id);
+        const attachments = [];
+        for (let attachment of attachmentList) {
+            attachments.push(attachment.dataValues.url);
+        }
+        res.status(200).json({
+            ...result.dataValues,
+            attachments: attachments,
+            message: 'Get advertisement successful'
+        });
+    } catch (err) {
+        console.log(err)
+        res.status(422).json({
+            message: 'Advertisement Not Found'
+        })
+    }
+};
+
 module.exports = {
     createAdvertisement,
     getAllAdvertisements,
@@ -231,5 +253,6 @@ module.exports = {
     approveAdvertisement,
     rejectAdvertisement,
     getAdvertisementForGuest,
-    getRelatedAdvertisementForGuest
+    getRelatedAdvertisementForGuest,
+    getAdvertisementByIdForGuest
 };

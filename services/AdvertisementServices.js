@@ -158,6 +158,17 @@ const getRelatedAdvertisementForGuest = async () => {
     })
 }
 
+const getAdvertisementByIdForGuest = async (id) => {
+    return await Advertisement.findOne(
+        {
+            where: {
+                id: id,
+                status: [ADVERTISEMENT_STATUS.OUTSTANDING, ADVERTISEMENT_STATUS.UPGRADED]
+            }
+        }
+    );
+  };
+
 module.exports = {
   createAdvertisement,
   getAllAdvertisements,
@@ -170,5 +181,6 @@ module.exports = {
   updateExpiredAdvertisementUpgrade,
   upgradeAdvertisement,
   getAdvertisementForGuest,
-  getRelatedAdvertisementForGuest
+  getRelatedAdvertisementForGuest,
+  getAdvertisementByIdForGuest
 };
