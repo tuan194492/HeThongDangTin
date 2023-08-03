@@ -83,8 +83,9 @@ const rejectAdvertisement = async (id) => {
   }
 };
 
-const upgradeAdvertisement = async (id) => {
+const upgradeAdvertisement = async (id, payment_id, data) => {
   const advertisement = await Advertisement.findByPk(id);
+  const {dateBegin, duration , service_type}= data;
   if (!advertisement) {
     throw new Error("Advertisement not found");
   } else {

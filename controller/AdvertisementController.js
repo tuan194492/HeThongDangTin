@@ -3,7 +3,8 @@ const User = require("../models/User");
 const advertisementServices = require("../services/AdvertisementServices");
 const fileServices = require("../services/FilesServices");
 const userService = require("../services/UserServices")
-
+const paymentServices = require("../services/PaymentServices");
+const pricePerHour = 10000;
 
 const createAdvertisement = async (req, res, next) => {
     try {
@@ -249,6 +250,23 @@ const getAdvertisementByIdForGuest = async (req, res, next) => {
     }
 };
 
+const upgradeAdvertisement = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const payment = await paymentServices.deductAmtToPaymentAccountByUserId(req.user.userId, pricePerHour * req.body.duration / 3600, `Upgrade Advertisement ${id} `);
+        const result = await advertisementServices.upgradeAdvertisement(id, payment.id, req.body);
+        console.log(pricePerHour * result.duration / 3600)
+        res.status(200).json({
+            message: 'Upgrade advertisement successful'
+        });
+    } catch (err) {
+        console.log(err)
+        res.status(422).json({
+            message: err.toString() || 'Advertisement Not Found'
+        })
+    }
+}
+
 module.exports = {
     createAdvertisement,
     getAllAdvertisements,
@@ -260,5 +278,6 @@ module.exports = {
     rejectAdvertisement,
     getAdvertisementForGuest,
     getRelatedAdvertisementForGuest,
-    getAdvertisementByIdForGuest
+    getAdvertisementByIdForGuest,
+    upgradeAdvertisement
 };

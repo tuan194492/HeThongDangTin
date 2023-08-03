@@ -12,6 +12,7 @@ router.get('/guest/related', advertisementController.getRelatedAdvertisementForG
 router.post('/', authController.authenticateToken, fileServices.validateUpload, advertisementController.createAdvertisement);
 router.get('/my-advertisement', authController.authenticateToken, advertisementController.getAllAdvertisementsByUserId);
 router.get('/all', authController.authenticateToken, authController.authorizeAdmin, advertisementController.getAllAdvertisements);
+router.post('/upgrade/:id', authController.authenticateToken, advertisementController.upgradeAdvertisement);
 router.post('/approve/:id', authController.authenticateToken, authController.authorizeAdmin, advertisementController.approveAdvertisement);
 router.post('/reject/:id', authController.authenticateToken, authController.authorizeAdmin, advertisementController.rejectAdvertisement);
 router.put('/:id', authController.authenticateToken, advertisementController.updateAdvertisementById);
