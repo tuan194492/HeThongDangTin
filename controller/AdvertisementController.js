@@ -215,6 +215,7 @@ const getRelatedAdvertisementForGuest = async (req, res, next) => {
         }
         res.status(200).json({ message: "Get All Advertisement Successful", data: {advertisements, count: result.count} });
     } catch (err) {
+        console.log(err)
         res.status(422).json({
             message: 'Some error happened. Please try again later!'
         })

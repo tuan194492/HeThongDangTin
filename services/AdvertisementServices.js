@@ -151,9 +151,8 @@ const getRelatedAdvertisementForGuest = async () => {
         where: {
             status: [ADVERTISEMENT_STATUS.OUTSTANDING, ADVERTISEMENT_STATUS.UPGRADED]
         },
-        limit: 4,
-        offset: (page - 1) * pageLimit,
-        order: sequelize.random()
+        limit: 5,
+        order: sequelize.literal('rand()')
 
     })
 }
