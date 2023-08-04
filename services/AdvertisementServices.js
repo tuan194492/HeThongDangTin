@@ -118,7 +118,7 @@ const updateExpiredAdvertisementUpgrade = async () => {
     console.log(new Date(ad.date_begin.valueOf()).getTime());
     console.log(ad.duration.valueOf());
     console.log((new Date()).valueOf());
-    if (new Date(ad.date_begin.valueOf()).getTime() + ad.duration < new Date().valueOf()) {
+    if (new Date(ad.date_begin.valueOf()).getTime() + ad.duration * 1000 < new Date().valueOf()) {
       await AdvertisementHistory.create({
         advertisement_id: ad.id,
         date_begin: ad.date_begin,
@@ -147,7 +147,8 @@ const getAdvertisementForGuest = async (pageLimit, page) => {
             status: [ADVERTISEMENT_STATUS.OUTSTANDING, ADVERTISEMENT_STATUS.UPGRADED]
         },
         limit: pageLimit,
-        offset: (page - 1) * pageLimit
+        offset: (page - 1) * pageLimit,
+        order: sequelize.literal('status DESC')
     })
 }
 
